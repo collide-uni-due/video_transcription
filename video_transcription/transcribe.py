@@ -123,8 +123,7 @@ def convert_mp4_to_wav(file_path_mp4):
     command = mp4_to_wav_command + [str(file_path_mp4), str(file_path_wav)]
     process = subprocess.run(command,
                              stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,
-                             shell=True)
+                             stderr=subprocess.PIPE)
 
     if process.returncode != 0:
         print(process.returncode)
