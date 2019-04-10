@@ -5,14 +5,16 @@ import nltk
 import tempfile
 import pathlib as pl
 import time
+import subprocess
 
 from pydub import AudioSegment
 from .chunkize_audio import AudioSilenceChunker
 
+
 class AudioTranscriber:
 
-    def __init__(self, *, language="en-US", service="google", chunker= None,
-                 request_timeout):
+    def __init__(self, *, language="en-US", service="google", chunker=None,
+                 request_timeout=5):
         self.language = language
         self.service = service
 
@@ -20,7 +22,6 @@ class AudioTranscriber:
             chunker = AudioSilenceChunker()
         self.chunker = chunker
         self.request_timeout = request_timeout
-
 
     def transcribe_audio_file_to_tokens_time(self, video_file_path):
         """
@@ -42,12 +43,11 @@ class AudioTranscriber:
 
         input_audio = AudioSegment.from_wav(file_path)
 
-
         sentence_audios = self.chunker.split_sentences(input_audio)
 
         # write individual sentences to disk so they can be read in for speech recognition.
         # this list contains filename, start and end time
-        with tempfile.TemporaryDirectory as t_f:
+        with tempfile.TemporaryDirectory() as t_f:
 
             sentence_file_list = []
             for i, (sentence, (start_time, end_time)) in enumerate(sentence_audios):
@@ -109,3 +109,26 @@ class AudioTranscriber:
                 sentence_sep = "\n"
             transcribed_text = sentence_sep.join(sentence_texts) + "."
             return transcribed_text, tokenized_words_with_time
+
+
+mp4_to_wav_command = ["ffmpeg", "-i"]
+
+
+def convert_mp4_to_wav(file_path_mp4):
+    file_path_mp4 = file_path_mp4.absolute()
+    file_name = file_path_mp4.name
+    file_name_wav = file_name + ".wav"
+    file_path_wav = file_path_mp4.parent / file_name_wav
+
+    command = mp4_to_wav_command + [str(file_path_mp4), str(file_path_wav)]
+    process = subprocess.run(command,
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE,
+                             shell=True)
+
+    if process.returncode != 0:
+        print(process.returncode)
+        print(process.stdout)
+        raise Exception("Conversion was unsuccessful")
+
+    return file_path_wav
