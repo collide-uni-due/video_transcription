@@ -23,7 +23,7 @@ class AudioTranscriber:
         self.chunker = chunker
         self.request_timeout = request_timeout
 
-    def transcribe_audio_file_to_tokens_time(self, video_file_path):
+    def transcribe_audio_file_to_tokens_time(self, wav_file_path):
         """
         Transcribes wav audio file in given dir and writes the text and tokenized timestamped
         words into the output dir
@@ -38,7 +38,7 @@ class AudioTranscriber:
         :return:
         :rtype:
         """
-        file_path = pl.Path(video_file_path)
+        file_path = pl.Path(wav_file_path)
         video_name = file_path.stem
 
         input_audio = AudioSegment.from_wav(file_path)
@@ -129,6 +129,7 @@ def convert_mp4_to_wav(file_path_mp4):
     if process.returncode != 0:
         print(process.returncode)
         print(process.stdout)
+        print(process.stderr)
         raise Exception("Conversion was unsuccessful")
 
     return file_path_wav
