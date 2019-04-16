@@ -20,7 +20,7 @@ as input to the transcriber
 
 ```python
 ts = transcribe.AudioTranscriber()
-word_time_tokens = ts.transcribe_audio_file_to_tokens_time(wav_path)
+text, word_time_tokens = ts.transcribe_audio_file_to_tokens_time(wav_path)
 ```
 You will get back a tuple with two values.
 The first is simply the text of the recording.
