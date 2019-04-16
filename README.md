@@ -19,8 +19,13 @@ Once you have the wav file you can give it
 as input to the transcriber
 
 ```python
-transcribe.AudioTranscriber()
+ts = transcribe.AudioTranscriber()
+word_time_tokens = ts.transcribe_audio_file_to_tokens_time(wav_path)
 ```
+You will get back a list of maps. Each map represents a word
+and has the key "word" for the actual word and "time" for
+the time in seconds for where it appeared in the recording (There is some
+interpolation used so it might not be completely accurate)
 The transcriber takes an optional language parameter
 , but defaults to english. By default it uses
 a free cloud transcription service from google.
