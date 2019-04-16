@@ -22,7 +22,9 @@ as input to the transcriber
 ts = transcribe.AudioTranscriber()
 word_time_tokens = ts.transcribe_audio_file_to_tokens_time(wav_path)
 ```
-You will get back a list of maps. Each map represents a word
+You will get back a tuple with two values.
+The first is simply the text of the recording.
+The second is a list of maps. Each map represents a word
 and has the key "word" for the actual word and "time" for
 the time in seconds for where it appeared in the recording (There is some
 interpolation used so it might not be completely accurate)
