@@ -111,7 +111,7 @@ class AudioTranscriber:
             return transcribed_text, tokenized_words_with_time
 
 
-mp4_to_wav_command = ["ffmpeg", "-i", "-y"]
+mp4_to_wav_command = ["ffmpeg", "-y", "-i", ]
 
 
 def convert_mp4_to_wav(file_path_mp4):

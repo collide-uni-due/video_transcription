@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='video_transcription',
-    version='0.2',
+    version='0.3',
     packages=['video_transcription'],
     url='',
     license='',
